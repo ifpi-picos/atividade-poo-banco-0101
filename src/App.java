@@ -3,11 +3,13 @@
 
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import banco.Cliente;
 import banco.Conta;
 import banco.Endereco;
-import tiposConta.ContaPoupanca;
+import notificacoesConta.Email;
+import notificacoesConta.Notificacao;
 
 import java.time.LocalDate;
 
@@ -47,7 +49,7 @@ public class App {
    
            switch (menu){
            case 1:
-           CriarConta();
+           CriarConta(conta);
            break;
    
            case 2:
@@ -75,8 +77,7 @@ public class App {
            System.exit(0); // para o sistema
    
            default:
-               System.out.println("Opção inválida!");
-               menu();
+           System.exit(0);
                break;
           
        } 
@@ -100,6 +101,7 @@ public class App {
          return conta;
    
        }
+        
        private static void Saldo(){
          System.out.println("Digite o numero da conta");
          int numero = Entrada.nextInt(); 
@@ -186,12 +188,13 @@ public class App {
        }
        
        /**
-     * @param <Endereco>
+     * @param contaPoupanca TODO
+       * @param <Endereco>
         * 
         */
-       private static void CriarConta(){
+       private static void CriarConta(ContaPoupanca contaPoupanca){
         System.out.println("Qual tipo de conta?");
-        String num = Entrada.next();
+        String tipo = Entrada.next();
 
 
          System.out.println("Informe o nome do usuario:");
@@ -203,7 +206,7 @@ public class App {
          System.out.println( "Informe a cidade:");
          String cidade = Entrada.next();
 
-         System.out.println( "Informe a data de bairro:");
+         System.out.println( "Informe o bairro:");
          String bairro = Entrada.next();
 
          System.out.println( "Informe o logradouro:");
@@ -215,7 +218,8 @@ public class App {
          System.out.println( "Informe o uf:");
          String uf = Entrada.next();
    
-         System.out.println( "Informe a data de nascimento:");
+         System.out.println( "Informe a data de nascimento use / para separa os numeros:");
+         System.out.println( "ps: use / para separa os numeros:");
          String dataString = Entrada.next();
 
         
@@ -224,14 +228,23 @@ public class App {
          LocalDate datadenas = LocalDate.of(Integer.parseInt(dataSeparada[2]),Integer.parseInt(dataSeparada[1]),Integer.parseInt(dataSeparada[0]));
    
         Endereco endereco = new Endereco(logradouro, bairro, cidade, uf, numerodacasa);
-         Cliente cliente = new Cliente(nome, cpf, datadenas, endereco);
-         if ( num.equalsIgnoreCase("Poupança")){
-          ContaPoupanca Conta = new ContaPoupanca(cliente, num);
-         c.addAll(Conta);
+        Cliente cliente = new Cliente(nome, cpf, datadenas, endereco);
+        Notificacao notificacao = new Email(); 
+
+         if ( tipo.equalsIgnoreCase("Poupança")){
+          ContaPoupanca conta = new ContaPoupanca(cliente, tipo, notificacao);
+         c.add();
         
         }
-         menu();
-       }
+        else if ( tipo.equalsIgnoreCase("Corrente")) {
+
+          
+          Collection<? extends Conta> conta = (Collection<? extends Conta>) new ContaCorrente(cliente, tipo);
+         c.addAll(conta);
+      
+        }
+        menu();
+      }
    
 
     public static void ListarContas() {

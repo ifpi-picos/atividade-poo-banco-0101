@@ -1,6 +1,8 @@
 package banco;
 
 import banco.Conta;
+import notificacoesConta.Notificacao;
+
 import java.time.LocalDate;
 
 
@@ -13,6 +15,7 @@ public class Conta {
     protected String tipo;
     private   String senha;
     private Cliente cliente;
+    Notificacao notificacao;
 
     private static int qtdconntas = 0;
 
@@ -26,9 +29,10 @@ public class Conta {
     this.saldo = (double) 0;
 }
 
-    public Conta(String senha,String tipo ) {
+    public Conta(String senha,String tipo,  Notificacao notificacao ) {
     this.senha = senha;
     this.tipo = tipo;
+    this.notificacao = notificacao;
 }
 
 
@@ -37,6 +41,7 @@ public class Conta {
     if (valor > 0  && this.getSaldo() >= 0 ){
         setSaldo(getSaldo()-valor);
         System.out.println("Saque realizado! ");
+        this.enviaNotificacao("Saque valor de", valor);
     }
     else {
         System.out.println("Saque negado!");
@@ -48,6 +53,7 @@ public class Conta {
     if (valor > 0){
        setSaldo(getSaldo() + valor);
        System.out.println(" Deposito realizado! ");
+       this.enviaNotificacao("Deposito valor de", valor);
     }
     else {
        System.out.println("Deposito negado! ");
@@ -62,6 +68,7 @@ public class Conta {
         setSaldo(getSaldo() - valor );
         ContaParaDeposito.saldo = ContaParaDeposito.getSaldo() + valor;
         System.out.println("Transferencia realizado!");
+        this.enviaNotificacao("Transferencia valor de", valor);
     }
     
      else{
@@ -70,6 +77,12 @@ public class Conta {
 
 } 
 
+    protected String enviaNotificacao(String menu, double valor) {
+
+      this.notificacao.enviaNotificacao(menu, valor);
+      return menu;
+
+    }
  
     public int getNumerodaconta() {
         return numerodaconta;
@@ -102,7 +115,7 @@ public class Conta {
         return tipo;
     }
 
-
+    
 
 //this get
 
