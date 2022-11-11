@@ -1,69 +1,91 @@
 package banco;
-import java.time.LocalDate;
 
-
-import banco.Cliente;
-
-
+import java.util.ArrayList;
+import java.util.List;
 
 public class Cliente {
-    
+
+
     private String nome;
-    private final String cpf;
-    private final LocalDate datadenas;
-    private Endereco endereco; 
- 
+    private String cpf;
+    private String dataDeNas;
+    private Endereco endereco;
+    private String telefone;
+    private String email;
+
+
+    private List<Conta> contas = new ArrayList<>();
+    private List<ContaCorrente> contaCorrentes = new ArrayList<>();
+    private List<ContaPoupanca> contaPoupancas = new ArrayList<>();
     
-    public Cliente(String nome, String cpf, LocalDate datadenas, Endereco endereco) {
+
+    public Cliente(String nome, String cpf, String dataDeNas, Endereco endereco, String telefone, String email) {
         this.nome = nome;
         this.cpf = cpf;
-        this.datadenas = datadenas;
+        this.dataDeNas = dataDeNas;
         this.endereco = endereco;
+        this.telefone = telefone;
+        this.email= email;
+        
     }
-    
+
     public String getNome() {
         return nome;
     }
+    
     public void setNome(String nome) {
         this.nome = nome;
     }
+    
     public String getCpf() {
         return cpf;
+    }   
+
+    public String getEmail() {
+        return email;
     }
-    public LocalDate getDatadenas() {
-        return datadenas;
+
+    public String getDataDeNas() {
+        return dataDeNas;
     }
     
-    
-    /**
-     * @return
-     */
     public Endereco getEndereco() {
-        return endereco;
+        return getEndereco();
     }
-    /**
-     * @return
-     */
-    public String getCidadeEndereco(){
-        return this.endereco.getCidade();
+
+    public String getTelefone() {
+        return telefone;
     }
-    public String getUfEndereco(){
-        return this.endereco.getUf();
-    }
-    public String getLogradouroEndereco (){
+    
+    public String getLogradouro() {
         return this.endereco.getLogradouro();
     }
-    public int getNumerodacasaEndereco (){
-        return this.endereco.getNumerodacasa();
+    
+    public int getNumeroCasa() {
+        return this.endereco.getNumeroCasa();
     }
-
-
-    public String getBairroEndereco() {
+    
+    public String getBairro() {
         return this.endereco.getBairro();
     }
-
     
-   
+    public String getCidade() {
+        return this.endereco.getCidade();
+    }
+    
+    public String getUf() {
+        return this.endereco.getUf();
+    }
 
-   
+    public List<Conta> getConta() {
+        return contas;
+    }
+    
+    public List<ContaCorrente> getContaCorrentes() {
+        return contaCorrentes;
+    }
+    
+    public List<ContaPoupanca> getContaPoupancas() {
+        return contaPoupancas;
+    }
 }

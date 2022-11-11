@@ -1,33 +1,57 @@
 package banco;
 
 public class Endereco {
-
+    
     private String logradouro;
+    private int numeroCasa;
     private String bairro;
     private String cidade;
     private String uf;
-    private int numerodacasa;
-
-    public Endereco(String logradouro, String bairro, String cidade, String uf, int numerodacasa){
-        this.logradouro = logradouro  ;
+    
+    
+    public Endereco(String logradouro, int numeroCasa, String bairro, String cidade, String uf) {
+        this.logradouro = logradouro;
+        this.numeroCasa = numeroCasa;
         this.bairro = bairro;
         this.cidade = cidade;
-        this.uf = uf; 
-        this.numerodacasa = numerodacasa;
+        this.uf = uf;
     }
-    public String getBairro() {
-        return bairro;
-    }
-    public String getCidade() {
-        return cidade;
-    }
+    
     public String getLogradouro() {
         return logradouro;
     }
-    public int getNumerodacasa() {
-        return numerodacasa;
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
     }
+    public int getNumeroCasa() {
+        return numeroCasa;}
+
+    public void setNumeroCasa(int numeroCasa) {
+        this.numeroCasa = numeroCasa;
+    }    
+    
+    public String getBairro() {
+        return bairro;
+    }
+    
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+    
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }    
+    
     public String getUf() {
         return uf;
     }
+
+    public void setUf(String uf) {
+        this.uf = uf;
+    }
+
 }

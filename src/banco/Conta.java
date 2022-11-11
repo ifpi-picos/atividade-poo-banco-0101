@@ -1,168 +1,153 @@
 package banco;
 
-import banco.Conta;
-import notificacoesConta.Notificacao;
+import formatacao.Numformata;
 
-import java.time.LocalDate;
+public class Conta {
 
+    private static int counterContas = 1;
+    private static int counterAgencia = 0001;
 
-public class Conta { 
+    private int agencia;
+    private int numeroConta;
+    protected Cliente cliente;
+    protected double saldo = 0.00;
+    private int contaType;
+    protected Notificacao notificacao;
 
-    private int numerodaagencia = 0001;
+    Sms sms = new Sms();
+    Email email = new Email();
 
-    private int numerodaconta;
-    private Double saldo; 
-    protected String tipo;
-    private   String senha;
-    private Cliente cliente;
-    Notificacao notificacao;
-
-    private static int qtdconntas = 0;
-
-/**
-     * @param cliente
-     */
-    public Conta( Cliente cliente){
-    this.cliente = cliente;
-    qtdconntas++;
-    this.numerodaconta = qtdconntas;
-    this.saldo = (double) 0;
-}
-
-    public Conta(String senha,String tipo,  Notificacao notificacao ) {
-    this.senha = senha;
-    this.tipo = tipo;
-    this.notificacao = notificacao;
-}
-
-
-   public void Sacar(double valor){
-
-    if (valor > 0  && this.getSaldo() >= 0 ){
-        setSaldo(getSaldo()-valor);
-        System.out.println("Saque realizado! ");
-        this.enviaNotificacao("Saque valor de", valor);
-    }
-    else {
-        System.out.println("Saque negado!");
-    } 
-}
-
-   public void Depositar(double valor){
-
-    if (valor > 0){
-       setSaldo(getSaldo() + valor);
-       System.out.println(" Deposito realizado! ");
-       this.enviaNotificacao("Deposito valor de", valor);
-    }
-    else {
-       System.out.println("Deposito negado! ");
+    public Conta(Cliente cliente, int tipoConta) {
+        this.agencia = counterAgencia;
+        this.cliente = cliente;
+        this.numeroConta = counterContas;
+        counterContas += 1;
+        counterAgencia += 1;
+        this.contaType = tipoConta;
     }
 
 
-} 
-
-    public void Transferencia(Conta ContaParaDeposito, double valor){
-
-    if (valor > 0 && this.getSaldo() > 0){
-        setSaldo(getSaldo() - valor );
-        ContaParaDeposito.saldo = ContaParaDeposito.getSaldo() + valor;
-        System.out.println("Transferencia realizado!");
-        this.enviaNotificacao("Transferencia valor de", valor);
+    public static int getCounterContas() {
+        return counterContas;
     }
     
-     else{
-        System.out.println("Transferencia negada!");
-    } 
-
-} 
-
-    protected String enviaNotificacao(String menu, double valor) {
-
-      this.notificacao.enviaNotificacao(menu, valor);
-      return menu;
-
+    public static int getCounterAgencia() {
+        return counterAgencia;
     }
- 
-    public int getNumerodaconta() {
-        return numerodaconta;
+    public int getContaType() {
+        return contaType;
+    }
+
+    public int getAgencia() {
+        return agencia;
+    }
+
+    public int getNumeroConta() {
+        return numeroConta;
     }
     
-    public Double getSaldo() {
-        return saldo;
-    }
-    public void setSaldo(Double saldo) {
-        this.saldo = saldo;
-    }
-
-    public int getNumerodaagencia() {
-        return numerodaagencia;
-    }
-    /**
-     * @return
-     */
     public Cliente getCliente() {
         return cliente;
     }
-
-  public String getSenha() {
-        return senha;
-    }
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-  public String getTipo() {
-        return tipo;
-    }
-
     
-
-//this get
-
-
-    public String getNomecliente() {
-        return this.cliente.getNome();
+    public double getSaldo() {
+        return saldo;
     }
-    public LocalDate getDatadenascliente() {
-        return this.cliente.getDatadenas();
+
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
     }
-    public String getCpfcliente() {
-        return this.cliente.getCpf();
-    }
+
+    public String getContaTipo(){
+        if(getContaType() == 0){
+            return "Conta Corrente";
+        }else if(getContaType() == 1){
+            return "Conta Poupança";
+        }
+    return null;}
+
     public String getClienteEnderecocidade() {
-        return this.cliente.getCidadeEndereco();
+        return this.cliente.getCidade();
     }
+
     public String getClienteEnderecoUf() {
-        return this.cliente.getUfEndereco();
+        return this.cliente.getUf();
     }
+
     public String getClienteLogradouroEndereco() {
-        return this.cliente.getLogradouroEndereco();
+        return this.cliente.getLogradouro();
     }
-    public int getClienteNumerodacasaEndereco(){
-        return this.cliente.getNumerodacasaEndereco();
+    public int getClienteNumeroEndereco(){
+        return this.cliente.getNumeroCasa();
     }
     public String getClienteBairroEndereco(){
-        return this.cliente.getBairroEndereco();
+        return this.cliente.getBairro();
     }
+
+
+
+    public void deposito(Double valor) {
+        if (valor > 0) {
+            setSaldo(getSaldo() + valor);
+        } else {
+        }
+    }
+    
+    
+    
+    public void sacar (Double valor) {
+        if (this.getSaldo() > 0) {
+            setSaldo(getSaldo() - valor);        
+            }
+        }
+    
+
+    public void Transferir(Conta contaDeposito, Double valor) {
+        if (valor > 0 && this.getSaldo() >= valor) {
+            setSaldo(getSaldo() - valor);
+            contaDeposito.saldo = contaDeposito.getSaldo() + valor;
+        }
+    }
+
 
     public String toString() {
-        return " Nome Do Usuario: " + getNomecliente() + "\n"
-                + "Tipo da conta: " + getTipo() + "\n"
-                +" Saldo: " + getSaldo() + "\n" 
-                +" Numero da conta: " + getNumerodaconta() + "\n" 
-                +" Data Nascimento: " + getDatadenascliente() + "\n" 
-                +" Cpf: " + getCpfcliente() + "\n"  
-                +" Endereço: " + "\n-Cidade: " +getClienteEnderecocidade()
-                +"\n-Logradouro: " +getClienteLogradouroEndereco() +"\n-Número: "+getClienteNumerodacasaEndereco()
-                +"\n-Bairro: "+getClienteBairroEndereco()
-                + "\n-Uf: " + getClienteEnderecoUf();
+        return 
+            "\nNúmero da conta: " + this.getNumeroConta() +
+            "\nAgência: " +this.getAgencia() +
+            "\nNome: " + this.cliente.getNome() +
+            "\nTipo de conta: " + getContaTipo() +
+            "\nTelefone: " + this.cliente.getTelefone() +
+            "\nEmail: " + this.cliente.getEmail() +
+            "\nCPF: " + this.cliente.getCpf() +
+            "\nData de Nascimento: " + this.cliente.getDataDeNas() +
+            "\nSaldo: " + Numformata.doubletoString(this.getSaldo()) + 
+            "\nLogradouro: " + this.cliente.getLogradouro() +
+            "\nNúmero da casa: " + this.cliente.getNumeroCasa() +
+            "\nBairro: " + this.cliente.getBairro() +
+            "\nCidade: " + this.cliente.getCidade() +
+            "\nUF : " + this.cliente.getUf() +
+            "\n";
     }
 
-    public void Transferir(Conta contaDestinatario, double valor) {
+
+    public void Deposito(Double valor) {
     }
 
-    public void statusConta() {
+
+    public void Sacar(Double valorSaque) {
     }
+
+
+    public void Transferir(Conta contaRemetente, double valorDef) {
+    }
+
+
+
+
+
+
 
 
 }
+
+
